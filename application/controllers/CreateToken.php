@@ -84,7 +84,7 @@ $intent = "sale";
     $resultdata = curl_exec($url);
     curl_close($url);
     $api_decode2 = json_decode($resultdata);
-    // print_r($api_decode2);
+    print_r($api_decode2);
     //echo $api_decode2['paymentID'];
  	//print_r($api_decode2->paymentID);
  	 $paymentIDis = $api_decode2->paymentID;

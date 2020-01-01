@@ -12,46 +12,57 @@
 
 <body>
 
-<button id="bKash_button" onclick="create_payment()">Pay With bKash</button>
+<button id="bKash_button" onclick="create_token()">Pay With bKash</button>
 
 <script type="text/javascript">
  
     var accessToken='';
-    $(document).ready(function(){
-        $.ajax({
-            url: "<?php echo site_url('Token')?>",
-            type: 'get',
-            contentType: 'html',
-            success: function (data) {
-                //alert(data);
-                console.log('got data from token  ..');
-                console.log(JSON.stringify(data));
-                
-                accessToken=JSON.stringify(data);
-                //alert(accessToken);
-            }
-           
-        })
-
-
-
-        });
-
-function create_payment(){
-    //alert(accessToken);
-    var amount =100;
+     var paymentId='';
+function create_token(){
     // var dataStr = "accessToken="+accessToken+ "&amount="+amount;
+    $.ajax({
+            type:"post",
+            url:"<?php echo site_url('Token')?>",
+            success:function(data){
+                accessToken = data; 
+               create_payment(accessToken);   
+            }
+
+        })
+};
+
+function create_payment(accessToken){
+    var amount =100;
+      accessToken;
+
     $.ajax({
             type:"post",
             url:"<?php echo site_url('CreatePayment')?>",
             data : {"accessToken" : accessToken, "amount" : amount},
-            success:function(data){
-                 
-           alert(data);
+            success:function(paymentIDis){
+                 paymentId = paymentIDis;
+                 executePayment(paymentId);
                  
             }
 
         })
+
+};
+
+function executePayment(paymentId){
+      paymentId;
+
+    $.ajax({
+            type:"post",
+            url:"<?php echo site_url('ExecutePayment')?>",
+            data : {"accessToken" : accessToken, "paymentId" : paymentId},
+            success:function(data){
+                 
+                alert(data);
+            }
+
+        })
+
 };
     
     
